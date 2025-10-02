@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Practica 1</title>
+</head>
+<body>
+
+    <h1>Ordenación de números</h1>
+
+    <input type="number" id="caja1"/>
+    <input type="number" id="caja2"/>
+    <input type="number" id="caja3"/>
+
+    <button id="botonOrdenar">Ordenar números</button>
+
+    <p id="resultado"></p>
+    
+    <script src="../JS/jquery-3.7.1.js"></script>
+    <script>
+        $(document).ready(function(){
+            
+            $("#botonOrdenar").click(function(){
+                var num1 = parseInt($("#caja1").val());
+                var num2 = parseInt($("#caja2").val());
+                var num3 = parseInt($("#caja3").val());
+
+                var mayor = "";
+                var menor = "";
+                var intermedio = "";
+
+                if(num1 > num2 && num1 > num3){
+                    mayor = num1;
+                    if(num2 > num3){
+                        intermedio = num2;
+                        menor = num3;
+                    } else {
+                        intermedio = num3;
+                        menor = num2;
+                    }
+                } else if(num2 > num1 && num2 > num3){
+                    mayor = num2;
+                    if(num1 > num3){
+                        intermedio = num1;
+                        menor = num3;
+                    } else {
+                        intermedio = num3;
+                        menor = num1;
+                    }
+                } else if(num3 > num1 && num3 > num2){
+                    mayor = num3;
+                    if(num1 > num2){
+                        intermedio = num1;
+                        menor = num2;
+                    } else {
+                        intermedio = num2;
+                        menor = num1;
+                    }
+                };
+                var texto = "El número mayor es " + mayor + ", el intermedio es " + intermedio + " y el menor es " + menor + ".";
+                $("#resultado").text(texto);
+            });
+
+        });
+    </script>
+</body>
+</html>

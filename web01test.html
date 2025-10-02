@@ -4,8 +4,30 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>PRUEBA</title>
+    <style>
+        .tituloRojo {
+            color: red;
+        }
+    </style>
 </head>
 <body>
-    cambio
+    
+    <h1 id="titulo">HOLA MUNDO, CLICAME PARA CAMBIAR EL TEXTO Y EL COLOR</h1>
+
+    <script src="JS/jquery-3.7.1.js"></script>
+    <script>
+        // CODIGO JQUERY
+        $(document).ready(function(){
+
+            alert("Hola mundo");
+
+            $("#titulo").click(function() {
+                console.log("Has cambiado el texto del titulo h1");
+                $(this).text("HE CAMBIADO");
+                $(this).addClass("tituloRojo");
+            });
+
+        })
+    </script>
 </body>
 </html>

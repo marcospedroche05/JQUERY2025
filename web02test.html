@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        img {
+            width: 350px;
+            height: 250px;
+        }
+    </style>
+</head>
+<body>
+
+    <img src="images/img1.jpg">
+    <img src="images/img1.jpg">
+    <img src="images/img1.jpg">
+    <img src="images/img1.jpg">
+    
+
+    <script src="JS/jquery-3.7.1.js"></script>
+    <script>
+        $(document).ready(function(){
+            $("img").mouseover(function(){
+                $(this).attr("src", "images/img2.png");
+                var actual = $(this).attr("src");
+                console.log("Img cambiada: " + actual);
+            });
+
+            $("img").mouseout(function(){
+                $(this).attr("src", "images/img1.jpg");
+                var actual = $(this).attr("src");
+                console.log("Img cambiada: " + actual);
+            });
+        })
+    </script>
+</body>
+</html>
