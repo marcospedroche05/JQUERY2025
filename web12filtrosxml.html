@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <h1>Filtros XML</h1>
+    <label for="">Introduzca ID: </label>
+    <input type="text" id="cajaid"/>
+    <button id="botonatributo">Buscar atributo ID</button>
+    <hr>
+    <label for="">Introduca localidad</label>
+    <input type="text" id="cajalocalidad"/>
+    <button id="botonlocalidad">Buscar atributo localidad</button>
+    <hr>
+    <h1 style="color: fuchsia;" id="mensaje"></h1>
+    <ul id="listadepartamentos"></ul>
+    <script src="JS/jquery-3.7.1.js"></script>
+    <script>
+        $(document).ready(function(){
+
+            $("#botonatributo").click(function(){
+                console.log("Antes de servicio de ID");
+                var idbuscar = $("#cajaid").val();
+                $.get("documents/departamentos.xml", function(data){
+                    console.log("Dentro del servicio de ID");
+                    var html = "";
+                    var filtro = "DEPT[DEPT_NO=" + idbuscar + "]";
+                    var nododept = $(data).find(filtro);
+                    var nombre = $(nododept).find("DNOMBRE").text();
+                    var localidad = $(nododept).find("LOC").text();
+                    $("#mensaje").text("Departamento: " + nombre + ", Localidad: " + localidad);
+                });
+                console.log("Después del servicio de ID");
+            });
+
+            $("#botonlocalidad").click(function(){
+                console.log("Antes del servicio de localidad");
+                var localidad = $("#cajalocalidad").val();
+                $.get("documents/departamentos.xml", function(data){
+                    console.log("Dentro del servicio de localidad");
+                    var html = "";
+                    var filtro = "LOC:contains(" + localidad + ")";
+                    $(data).find(filtro).each(function(){
+                        var numero = $(this).parent().attr("DEPT_NO");
+                        var nombre = $(this).parent().find("DNOMBRE").text();
+                        var localidad = $(this).text();
+                        html += "<li> Numero: " + numero + ". Departamento: " + nombre + "</li>";
+                        $("#listadepartamentos").html(html);
+                    })
+                })
+                console.log("Después del servicio de localidad");
+            })
+
+        })
+    </script>
+</body>
+</html>

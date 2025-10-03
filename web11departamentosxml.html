@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <h1>Departamentos XML</h1>
+    <button id="botonLeer">Leer departamentos</button>
+    <table id="tabladepartamentos">
+        <thead>
+            <tr>
+                <th>NUMERO</th>
+                <th>NOMBRE</th>
+                <th>LOCALIDAD</th>
+            </tr>
+        </thead>
+        <tbody></tbody>
+    </table>
+    <script src="JS/jquery-3.7.1.js"></script>
+    <script>
+        $(document).ready(function(){
+
+
+            $("#botonLeer").click(function(){
+                console.log("Antes del servicio");
+                $.get("documents/departamentos.xml", function(data){
+                    console.log("Dentro del servicio");
+                    var html = "";
+                    $(data).find("DEPT").each(function(){
+                        var numero = $(this).attr("DEPT_NO");
+                        var dnombre = $(this).find("DNOMBRE").first().text();
+                        var localizacion = $(this).find("LOC").first().text();
+                        html += "<tr>";
+                        html += "<td>" + numero + "</td>";
+                        html += "<td>" + dnombre + "</td>";
+                        html += "<td>" + localizacion + "</td>";
+                        html += "</tr>";
+                    })
+                    $("#tabladepartamentos tbody").html(html);
+                })
+                console.log("Después del servicio");
+            })         
+
+        })
+    </script>
+</body>
+</html>

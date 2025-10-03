@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        img {
+            width: 250px;
+            height: 150px;
+        }
+    </style>
+</head>
+<body>
+    <h1>Imágenes dinámicas con eventos</h1>
+    <label for="">Introduce un rango de imagenes</label>
+    <input type="range" id="rango" max="20" min="1" value="1"/>
+    <span id="valorrango"></span>
+    <hr>
+    <div id="contenedor"></div>
+    <script src="JS/jquery-3.7.1.js"></script>
+    <script>
+        $(document).ready(function(){
+
+            $("#rango").change(function(){
+                var rango = parseInt($("#rango").val());
+                $("#valorrango").text(rango);
+                $("#contenedor").html("");
+                for (let i = 0; i < rango; i++) {
+                    var imagen = $("<img>");
+                    imagen.attr("src", "images/img1.jpg");
+                    $("#contenedor").append(imagen);
+                    $("img").mouseover(function(){
+                        $(this).attr("src", "images/img2.png");
+                    });
+                    $("img").mouseout(function(){
+                        $(this).attr("src", "images/img1.jpg");
+                    });
+                }
+            });
+
+        });
+    </script>
+</body>
+</html>

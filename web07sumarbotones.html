@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <h1>Sumar botones</h1>
+    <button id="botongenerar">Generar botones</button>
+    <hr>
+    <div id="contenedorbotones"></div>
+    <h1 id="resultado"></h1>
+    <script src="JS/jquery-3.7.1.js"></script>
+    <script>
+        $(document).ready(function(){
+
+            $("#botongenerar").click(function(){
+                //INICIALIZAR EL RESULTADO A CERO CADA VEZ QUE GENERO BOTONES, LIMPIO SIEMPRE EL HTML PARA NO TENER MÁS DE 10 BOTONES
+                $("#contenedorbotones").html("");
+                var resultado = 0;
+                $("#resultado").text(resultado);
+                for (let i = 1; i <= 10; i++) {
+                    var boton = $("<button>");
+                    //OBTENCIÓN DE NÚMERO ALEATORIO COMPRENDIDO ENTRE 100 Y 1 (EL MINIMO SE INCLUYE, EL MÁXIMO QUE ESCRIBES NO)
+                    var num = Math.floor(Math.random() * (101 - 1) + 1);
+                    boton.text(num);
+                    boton.val(num);
+                    $("#contenedorbotones").append(boton);
+
+                    boton.click(function(){
+                        //POR CADA CLICK EN UN BOTÓN DE LOS GENERADOS, SE INCREMENTA EL RESULTADO CON EL VALOR DE DICHO BOTÓN
+                        resultado += parseInt($(this).val());
+                        $("#resultado").text(resultado);
+                        //CADA VEZ QUE SUMO EL VALOR DEL BOTÓN QUE PULSO, ESTE SE ELIMINA
+                        $(this).remove();
+                    });
+                    // if($("#contenedorbotones").children.length <= 1){
+                    //     $("#resultado").text("El resultado final es " + resultado);
+                    // }
+                }
+            });
+        });
+    </script>
+</body>
+</html>
