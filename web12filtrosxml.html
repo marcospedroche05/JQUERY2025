@@ -29,9 +29,14 @@
                     var html = "";
                     var filtro = "DEPT[DEPT_NO=" + idbuscar + "]";
                     var nododept = $(data).find(filtro);
-                    var nombre = $(nododept).find("DNOMBRE").text();
-                    var localidad = $(nododept).find("LOC").text();
-                    $("#mensaje").text("Departamento: " + nombre + ", Localidad: " + localidad);
+                    //PARA COMPROBAR SI EL FIND HA RESCATADO O NO ALGÚN DEPARTAMENTO, USO EL LENGHT Y VEO CUANTOS HA RECIBIDO, SI RECIBE MENOS DE UNO, TIRO EL ERROR
+                    if(nododept.length < 1){
+                        alert("Error: no se ha podido encontrar un departamento con el id " + idbuscar);
+                    } else {
+                        var nombre = $(nododept).find("DNOMBRE").text();
+                        var localidad = $(nododept).find("LOC").text();
+                        $("#mensaje").text("Departamento: " + nombre + ", Localidad: " + localidad); 
+                    }
                 });
                 console.log("Después del servicio de ID");
             });
@@ -44,6 +49,7 @@
                     var html = "";
                     var filtro = "LOC:contains(" + localidad + ")";
                     $(data).find(filtro).each(function(){
+                        //MI FORMA DE OBTENER EL Nº Y EL NOMBRE MEDIANTE LA LOCALIZACION ES ACCEDIENDO A LA ETIQUETA PADRE, QUE ES "DEPT"
                         var numero = $(this).parent().attr("DEPT_NO");
                         var nombre = $(this).parent().find("DNOMBRE").text();
                         var localidad = $(this).text();
