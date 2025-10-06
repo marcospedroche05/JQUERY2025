@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Alumnos Nota</title>
+</head>
+<body>
+    <h1>Notas de alumnos</h1>
+    <label for="">Introduce la nota mínima: </label>
+    <input type="number" id="nota" min="0"/>
+    <button id="botonnota">Leer alumnos</button>
+    <hr>
+    <ul id="listaalumnos"></ul>
+    <script src="../JS/jquery-3.7.1.js"></script>
+    <script>
+        $(document).ready(function(){
+
+            $("#botonnota").click(function(){
+                var valorNota = parseInt($("#nota").val());
+                $.get("../documents/alumnos.xml", function(data){
+                    var html = "";
+                    $(data).find("alumno").each(function(){
+                        var nombre = $(this).find("nombre").first().text();
+                        var apellidos = $(this).find("apellidos").first().text();
+                        var nota = $(this).find("nota").first().text();
+                        if(nota >= valorNota) {
+                            html += "<li>" + nombre + " " + apellidos + ", nota: " + nota + "</li>";
+                            $("#listaalumnos").html(html);
+                        }
+                    })
+                })
+            })
+
+        })
+    </script>
+</body>
+</html>
