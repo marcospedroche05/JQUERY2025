@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <h1>Servicio coches</h1>
+    <button id="leercoches">Leer coches</button>
+    <hr>
+    <select name="select" id="desplegable">
+    </select>
+    <div id="contenedor"></div>
+    <script src="JS/jquery-3.7.1.js"></script>
+    <script>
+        $(document).ready(function () {
+            var url = "https://apiclientesxml.azurewebsites.net/";
+            var request = "/api/Clientes/GetCochesXML";
+            $("#leercoches").click(function () {
+                $("#desplegable").html("");
+                $.get(url + request, function (data) {
+                    $(data).find("coche").each(function () {
+                        var idCoche = $(this).attr("idcoche");
+                        var marca = $(this).find("marca").first().text();
+                        var modelo = $(this).find("modelo").first().text();
+                        var opcion = $("<option>");
+                        opcion.val(idCoche);
+                        opcion.text(marca + " " + modelo);
+                        $("#desplegable").append(opcion);
+                    })
+                })
+            })
+
+            $("#desplegable").change(function () {
+                var id = $(this).val();
+                $.get(url + request, function(data) {
+                    $(data).find("coche[idcoche=" + id + "]").each(function () {
+                        var html = "";
+                        var marca = $(this).find("marca").first().text();
+                        var modelo = $(this).find("modelo").first().text();
+                        var imagen = $(this).find("imagen").text();
+                        $("#contenedor").html(`<img src='${imagen}' style='width:150px'></img>`);
+                    })
+                })
+            })
+
+        })
+    </script>
+</body>
+
+</html>
