@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <h1>Servicio clientes</h1>
+    <select id="desplegable"></select>
+    <div id="contenedor"></div>
+    <script src="../JS/jquery-3.7.1.js"></script>
+    <script>
+        $(document).ready(function(){
+            var url = "https://apiclientesxml.azurewebsites.net";
+            var request = "/api/Clientes/GetClientesXML";
+            $.get(url + request, function(data){
+                $(data).find("CLIENTE").each(function(){
+                    var idcliente = $(this).attr("IDCLIENTE");
+                    var nombre = $(this).find("NOMBRE").first().text();
+                    var option = $("<option>");
+                    option.val(idcliente);
+                    option.text(nombre);
+                    $("#desplegable").append(option);
+                })
+            })
+
+            $("#desplegable").change(function(){
+                var id = $(this).val();
+                var html = "";
+                $.get(url + request, function(data){
+                    $(data).find("CLIENTE[IDCLIENTE=" + id + "]").each(function(){
+                        var nombre = $(this).find("NOMBRE").first().text();
+                        var direccion = $(this).find("DIRECCION").first().text();
+                        var email = $(this).find("EMAIL").first().text();
+                        var codigopostal = $(this).find("CODIGOPOSTAL").first().text();
+                        var paginaweb = $(this).find("PAGINAWEB").first().text();
+                        var imagen = $(this).find("IMAGENCLIENTE").first().text();
+                        html += `<p>Nombre: ${nombre}</p>`;
+                        html += `<p>Dirección: ${direccion}</p>`;
+                        html += `<p>Email: ${email}</p>`;
+                        html += `<p>Código postal: ${codigopostal}</p>`;
+                        html += `<p>Página web: ${paginaweb}</p>`;
+                        html += `<img src="${imagen}" style="width:150px"></img>`;
+                        $("#contenedor").html(html);
+                    });
+                })
+            })
+        })
+    </script>
+</body>
+</html>
