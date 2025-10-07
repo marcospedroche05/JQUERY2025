@@ -1,17 +1,34 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
     <style>
-        td, th {
+        table,
+        input {
+            margin: 1rem;
+        }
+
+        td,
+        th {
             padding: 0.4rem;
             text-align: center;
         }
     </style>
 </head>
+
 <body>
+    <label for="">Id departamento</label>
+    <input type="number" id="cajaid" /><br>
+    <label for="">Nombre</label>
+    <input type="text" id="cajanombre" /><br>
+    <label for="">Localidad</label>
+    <input type="text" id="cajalocalidad" /><br>
+    <button id="botoninsert">Insertar</button>
+    <button id="botonupdate">Modificar</button>
+    <button id="botoneliminar">Eliminar</button>
     <table border="1" id="tablaDepartamentos">
         <thead>
             <tr>
@@ -24,16 +41,81 @@
     </table>
     <script src="JS/jquery-3.7.1.js"></script>
     <script>
-        $(document).ready(function(){
+        $(document).ready(function () {
             loadDepartamentos();
+            let url = "https://apicruddepartamentosxml.azurewebsites.net/";
+            $("#botoninsert").click(function () {
+                let id = $("#cajaid").val();
+                let nombre = $("#cajanombre").val();
+                let localidad = $("#cajalocalidad").val();
+                //NECESITAMOS GENERAR UN STRING CON LA MISMA ESTRUCTURA 
+                //QUE EL DOCUMENTO XML PARA SUS REGISTROS
+                let datosxml = getDepartamentoXML(id, nombre, localidad);
+                let requestpost = "api/departamentos";
+
+                //REALIZAMOS LA PETICION CON AJAX
+                $.ajax({
+                    url: url + requestpost,
+                    type: "POST",
+                    contentType: "text/xml",
+                    data: datosxml,
+                    success: function () {
+                        console.log("Insertado");
+                        loadDepartamentos();
+                    }
+                })
+            })
+
+            $("#botonupdate").click(function () {
+                let id = $("#cajaid").val();
+                let nombre = $("#cajanombre").val();
+                let localidad = $("#cajalocalidad").val();
+                let requestupdate = "api/departamentos";
+                let dataxml = getDepartamentoXML(id, nombre, localidad);
+
+                $.ajax({
+                    url: url + requestupdate,
+                    type: "PUT",
+                    contentType: "text/xml",
+                    data: dataxml,
+                    success: function(){
+                        console.log("Modificado");
+                        loadDepartamentos();
+                    }
+                })
+            })
+
+            $("#botoneliminar").click(function(){
+                let id = $("#cajaid").val();
+                let requestDelete = "api/departamentos/" + id;
+                $.ajax({
+                    url: url + requestDelete,
+                    type: "DELETE",                    
+                    success: function(){
+                        console.log("ELIMINADO");
+                        loadDepartamentos();
+                    }
+                })
+            })
+
         })
 
-        function loadDepartamentos(){
+        function getDepartamentoXML(id, nombre, localidad) {
+            //COPIAMOS EL CODIGO DE GENERACIÓN DEL OBJETO XML
+            let datosxml = "<Departamento>";
+                datosxml += "<IdDepartamento>" + id + "</IdDepartamento>";
+                datosxml += "<Nombre>" + nombre + "</Nombre>";
+                datosxml += "<Localidad>" + localidad + "</Localidad>";
+                datosxml += "</Departamento>";
+            return datosxml;
+        }
+
+        function loadDepartamentos() {
             var url = "https://apicruddepartamentosxml.azurewebsites.net/";
-            var requestGetAll = "api/Departamentos"
+            var requestGetAll = "api/departamentos"
             var html = "";
-            $.get(url + requestGetAll, function(data){
-                $(data).find("Departamento").each(function(){
+            $.get(url + requestGetAll, function (data) {
+                $(data).find("Departamento").each(function () {
                     var id = $(this).find("IdDepartamento").first().text();
                     var nombre = $(this).find("Nombre").first().text();
                     var localidad = $(this).find("Localidad").first().text();
@@ -49,4 +131,5 @@
 
     </script>
 </body>
+
 </html>
