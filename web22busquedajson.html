@@ -18,27 +18,23 @@
                 $.each(data.jugadores, function(index, objeto){
                     var opcion = $("<option>");
                     opcion.text(objeto.nombre);
-                    opcion.val(objeto.nombre);
-                    $("#desplegable").append(opcion);
-                    
+                    opcion.val(index);
+                    $("#desplegable").append(opcion);                    
                 });               
             })
             $("#desplegable").change(function(){
                 var html = "";
                 $.getJSON(url, function(data){
-                    var nombre = $("#desplegable").val();
+                    var numero = $("#desplegable").val();
                     $.getJSON(url, function(data){
-                        $.each(data.jugadores, function(index, objeto){
-                            var nombrejugador = objeto.nombre
-                            if(nombrejugador == nombre){
-                                html += `<p>Nº: ${objeto.numero}</p>`;
-                                html += `<p>Nombre: ${objeto.nombre}</p>`;
-                                html += `<p>Posicion: ${objeto.posicion}</p>`;
-                                html += `<p>Edad: ${objeto.edad}</p>`;
-                                html += `<img src="${objeto.imagen}" style="width:150px"></img>`;
-                            }
-                            $("#contenedor").html(html);
-                        })
+                        var jugadores = data.jugadores;
+                        var jugador = jugadores[numero];
+                        html += `<p>Numero: ${jugador.numero}</p>`;
+                        html += `<p>Nombre: ${jugador.nombre}</p>`;
+                        html += `<p>Posicion: ${jugador.posicion}</p>`;
+                        html += `<p>Edad: ${jugador.edad}</p>`;
+                        html += `<img src="${jugador.imagen}" style="width:250px"></img>`;
+                        $("#contenedor").html(html);
                     })
                 })   
             })
