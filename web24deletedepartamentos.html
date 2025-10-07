@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <h1>DELETE DEPARTAMENTOS</h1>
+    <ul id="lista"></ul>
+    <script src="JS/jquery-3.7.1.js"></script>
+    <script>
+        var url = "https://apicruddepartamentospgs.azurewebsites.net/";
+        $(document).ready(function(){
+            leerDepartamentos();
+        })
+        function leerDepartamentos(){
+            var requestGet = "/webresources/departamentos";
+            $.getJSON(url + requestGet, function(data){
+                $.each(data, function(index, objeto){
+                    var departamento = $("<li>");
+                    departamento.text(objeto.nombre);
+                    var boton = $("<button>");
+                    boton.text("Eliminar");
+                    boton.val(index);
+                    $("#lista").append(departamento);
+                    $("#lista").append(boton);
+                    $(boton).click(function(){
+                        let requestDelete = "/webresources/departamentos/delete/" + departamento.numero;
+                        $.ajax({
+                            url: url + requestDelete,
+                            type: "DELETE",
+                            success: function(){
+                                console.log("BORRAO");
+                                leerDepartamentos();
+                            }
+                        })
+                    })
+                })  
+            })
+        }
+    </script>
+</body>
+</html>
