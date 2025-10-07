@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <h1>Busqueda JSON</h1>
+    <select name="" id="desplegable"></select>
+    <hr>
+    <div id="contenedor"></div>
+    <script src="JS/jquery-3.7.1.js"></script>
+    <script>
+        $(document).ready(function(){
+            var url = "documents/jugadores.json";
+            $.getJSON(url, function(data){
+                $.each(data.jugadores, function(index, objeto){
+                    var opcion = $("<option>");
+                    opcion.text(objeto.nombre);
+                    opcion.val(objeto.nombre);
+                    $("#desplegable").append(opcion);
+                    
+                });               
+            })
+            $("#desplegable").change(function(){
+                var html = "";
+                $.getJSON(url, function(data){
+                    var nombre = $("#desplegable").val();
+                    $.getJSON(url, function(data){
+                        $.each(data.jugadores, function(index, objeto){
+                            var nombrejugador = objeto.nombre
+                            if(nombrejugador == nombre){
+                                html += `<p>Nº: ${objeto.numero}</p>`;
+                                html += `<p>Nombre: ${objeto.nombre}</p>`;
+                                html += `<p>Posicion: ${objeto.posicion}</p>`;
+                                html += `<p>Edad: ${objeto.edad}</p>`;
+                                html += `<img src="${objeto.imagen}" style="width:150px"></img>`;
+                            }
+                            $("#contenedor").html(html);
+                        })
+                    })
+                })   
+            })
+            
+        })
+    </script>
+</body>
+</html>
