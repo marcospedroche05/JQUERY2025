@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        table {
+            margin: 1rem;
+        }
+        th, tr {
+            padding: 0.4rem;
+            text-align: center;
+        }
+        th:hover, td:hover {
+            background-color: rgb(250, 180, 180);
+        }
+    </style>
+</head>
+<body>
+    <h1>CRUD Departamentos</h1>
+    <hr>
+    <label for="">Introduce el numero: </label>
+    <input type="number" id="cajanum"/><br>
+    <label for="">Introduce el nombre: </label>
+    <input type="text" id="cajanombre"/><br>
+    <label for="">Introduce la localidad: </label>
+    <input type="text" id="cajalocalidad"/><br>
+    <button id="botonInsert">Insertar</button>
+    <button id="botonUpdate">Modificar</button>
+    <button id="botonDelete">Eliminar</button>
+    <table border="1" id="tabla">
+        <thead>
+            <th>Numero</th>
+            <th>Nombre</th>
+            <th>Localidad</th>
+        </thead>
+        <tbody></tbody>
+    </table>
+    <script src="JS/jquery-3.7.1.js"></script>
+    <script>
+        var url = "https://apicruddepartamentoscore.azurewebsites.net/";
+
+        $(document).ready(function(){
+            leerDepartamentos();
+            $("#botonInsert").click(function(){
+                insertarDepartamentos();
+            })
+            $("#botonUpdate").click(function(){
+                modificarDepartamentos();
+            })
+            $("#botonDelete").click(function(){
+                eliminarDepartamento();
+            })
+        })  
+
+        function leerDepartamentos(){
+            var html = "";
+            var requestGet = "api/Departamentos";
+            $.getJSON(url + requestGet, function(data){
+                $.each(data, function(index, objeto){
+                    var numero = objeto.numero;
+                    var nombre = objeto.nombre;
+                    var localidad = objeto.localidad;
+                    html += "<tr>";
+                        html += `<td>${numero}</td>`;
+                        html += `<td>${nombre}</td>`;
+                        html += `<td>${localidad}</td>`;
+                    html += "</tr>";
+                })
+                $("#tabla tbody").html(html);
+            })
+        }
+
+        function getJSON(numero, nombre, localidad){
+            let departamento = new Object();
+            departamento.numero = numero;
+            departamento.nombre = nombre;
+            departamento.localidad = localidad;
+            return JSON.stringify(departamento);
+        }
+
+        function insertarDepartamentos(){
+            var requestInsert = "api/Departamentos"
+            var numero = parseInt($("#cajanum").val());
+            var nombre = $("#cajanombre").val();
+            var localidad = $("#cajalocalidad").val();
+            var dataJSON = getJSON(numero, nombre, localidad);
+            $.ajax({
+                url: url + requestInsert,
+                type: "POST",
+                contentType: "application/json",
+                data: dataJSON,
+                success: function(){
+                    console.log("INSERTAO");
+                    leerDepartamentos();
+                }
+            })
+        }
+
+        function modificarDepartamentos(){
+            var requestUpdate = "api/Departamentos"
+            var numero = parseInt($("#cajanum").val());
+            var nombre = $("#cajanombre").val();
+            var localidad = $("#cajalocalidad").val();
+            var dataJSON = getJSON(numero, nombre, localidad);
+            $.ajax({
+                url: url + requestUpdate,
+                type: "PUT",
+                contentType: "application/json",
+                data: dataJSON,
+                success: function(){
+                    console.log("MODIFICAO");
+                    leerDepartamentos();
+                }
+            })
+        }
+
+        function eliminarDepartamento(){
+            var numero = parseInt($("#cajanum").val());
+            var requestDelete = "api/Departamentos/" + numero;
+            $.ajax({
+                url: url + requestDelete,
+                type: "DELETE",
+                success: function(){
+                    console.log("BORRAO");
+                    leerDepartamentos();
+                }
+            })
+        }
+
+    </script>
+</body>
+</html>
