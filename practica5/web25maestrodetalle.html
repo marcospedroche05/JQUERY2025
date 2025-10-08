@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        table {
+            margin: 1rem;
+        }
+        th, td {
+            padding: 0.4rem;
+            text-align: center;
+        }
+    </style>
+</head>
+
+<body>
+    <h1>Maestro detalle empleados departamentos</h1>
+    <ul id="lista"></ul>
+    <table id="tabla" border="1">
+        <thead>
+            <th>Apellido</th>
+            <th>Oficio</th>
+            <th>Salario</th>
+            <th>Departamento</th>
+        </thead>
+        <tbody></tbody>
+    </table>
+    <script src="../JS/jquery-3.7.1.js"></script>
+    <script>
+        var urldept = "https://apicruddepartamentospgs.azurewebsites.net/";
+        var urlemp = "https://apiempleadosspgs.azurewebsites.net/";
+        
+        $(document).ready(function () {
+            leerDepartamentos();
+        })
+
+        function leerDepartamentos() {
+            var requestget = "webresources/departamentos";
+            $("#lista").html("");
+            $.getJSON(urldept + requestget, function (data) {
+                $.each(data, function (index, departamento) {
+                    var li = $("<li>");
+                    li.text(departamento.nombre);
+                    var enlace = $("<a>");
+                    enlace.attr("href", "#")
+                    enlace.text("Empleados");
+                    enlace.val(departamento.numero);
+                    $(li).append(enlace);
+                    $("#lista").append(li);
+
+                    $(enlace).click(function () {
+                        var dept = $(this).val();
+                        var requestgetEmp = "api/empleados";
+                        $.getJSON(urlemp + requestgetEmp, function (data) {
+                            var html = "";
+                            $.each(data, function (indice, empleado) {
+                                if (empleado.departamento == dept) {
+                                    html += "<tr>";
+                                    html += `<td>${empleado.apellido}</td>`;
+                                    html += `<td>${empleado.oficio}</td>`;
+                                    html += `<td>${empleado.salario}</td>`;
+                                    html += `<td>${empleado.departamento}</td>`;
+                                    html += "</tr>";
+                                }
+                            })
+                            $("#tabla tbody").html(html);
+                        })
+                    })
+                })
+            })
+        }
+
+    </script>
+</body>
+
+</html>
