@@ -16,22 +16,23 @@
         })
         function leerDepartamentos(){
             var requestGet = "/webresources/departamentos";
+            $("#lista").html("");
             $.getJSON(url + requestGet, function(data){
                 $.each(data, function(index, objeto){
                     var departamento = $("<li>");
                     departamento.text(objeto.nombre);
                     var boton = $("<button>");
                     boton.text("Eliminar");
-                    boton.val(index);
+                    boton.val(objeto.numero);
                     $("#lista").append(departamento);
                     $("#lista").append(boton);
                     $(boton).click(function(){
-                        let requestDelete = "/webresources/departamentos/delete/" + departamento.numero;
+                        let requestDelete = "/webresources/departamentos/delete/" + $(this).val();
                         $.ajax({
                             url: url + requestDelete,
                             type: "DELETE",
                             success: function(){
-                                console.log("BORRAO");
+                                console.log("BORRAO");                                
                                 leerDepartamentos();
                             }
                         })
