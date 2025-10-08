@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <script src="../JS/jquery-3.7.1.js"></script>
+    <script>
+        var url = "https://apicrudhospital.azurewebsites.net/";
+        $(document).ready(function(){
+            var params = new window.URLSearchParams(window.location.search);
+            var idHospital = params.get("idHospital");
+            var request = `/webresources/hospitales/delete/${idHospital}`;
+            $.ajax({
+                url: url + request,
+                type: "DELETE",
+                success: function(){
+                    console.log("ELIMINAO");
+                    window.location.href = "web28homehospitales.html";
+                }
+            })
+        })
+    </script>
+</body>
+</html>

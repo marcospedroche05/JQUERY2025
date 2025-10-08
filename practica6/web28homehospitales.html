@@ -168,7 +168,6 @@
                 <ul class="navbar-nav me-auto mb-2 mb-md-0">
                     <li class="nav-item"> <a class="nav-link active" aria-current="page" href="web28homehospitales.html">Home</a> </li>
                     <li class="nav-item"> <a class="nav-link" href="web28createhospital.html">New hospital</a> </li>
-                    <li class="nav-item"> <a class="nav-link disabled" aria-disabled="true">Disabled</a> </li>
                 </ul>
                 <form class="d-flex" role="search"> <input class="form-control me-2" type="search" placeholder="Search"
                         aria-label="Search"> <button class="btn btn-outline-success" type="submit">Search</button>
@@ -178,7 +177,7 @@
     </nav>
     <main class="container">
         <div class="bg-body-tertiary p-5 rounded">
-            <h1>Home</h1>
+            <h1>Home</h1><br>
             <table id="tablahospitales" class="table table-bordered text-center table-striped table-hover">
                 <thead class="table-success">
                     <tr>
@@ -205,7 +204,9 @@
                         html += `<td>${hospital.direccion}</td>`;
                         html += `<td><a href="web28detailshospital.html?idHospital=${hospital.idhospital}">Detalles</a>`;
                         html += " "
-                        html += `<a href="web28edithospital.html?idHospital=${hospital.idhospital}">Editar</a></td>`;
+                        html += `<a href="web28edithospital.html?idHospital=${hospital.idhospital}">Editar</a>`;
+                        html += " "
+                        html += `<a href="web28deletehospital.html?idHospital=${hospital.idhospital}">Eliminar</a></td>`;
                         html += "</tr>"; 
                 })
                 $("#tablahospitales tbody").html(html); 
