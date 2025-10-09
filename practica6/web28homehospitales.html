@@ -199,14 +199,14 @@
             var request = "webresources/hospitales";
             $.getJSON(url + request, function(data){
                 $.each(data, function(index, hospital){
-                    html += "<tr>";
+                    html += `<tr>`;
                         html += `<td>${hospital.nombre}</td>`;
                         html += `<td>${hospital.direccion}</td>`;
-                        html += `<td><a href="web28detailshospital.html?idHospital=${hospital.idhospital}">Detalles</a>`;
+                        html += `<td><a href="web28detailshospital.html?idHospital=${hospital.idhospital}" class="btn btn-success">Detalles</a>`;
                         html += " "
-                        html += `<a href="web28edithospital.html?idHospital=${hospital.idhospital}">Editar</a>`;
+                        html += `<a href="web28edithospital.html?idHospital=${hospital.idhospital}" class="btn btn-warning text-white">Editar</a>`;
                         html += " "
-                        html += `<a href="web28deletehospital.html?idHospital=${hospital.idhospital}">Eliminar</a></td>`;
+                        html += `<a href="web28deletehospital.html?idHospital=${hospital.idhospital}" class="btn btn-danger">Eliminar</a></td>`;
                         html += "</tr>"; 
                 })
                 $("#tablahospitales tbody").html(html); 
